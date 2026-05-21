@@ -1,596 +1,120 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Observasi Pendahuluan - Rahayu Farma</title>
-<style>
-:root{
-  --navy:#1B3A6B;--blue:#2E75B6;--green:#1A7A45;--red:#C0392B;
-  --orange:#CA6F1E;--purple:#6C3483;
-  --bg:#F4F6F9;--card:#FFFFFF;--border:#DDE3EC;
-  --text:#1A1A2E;--muted:#6B7A9A;
-  --s0:#E74C3C;--s1:#E67E22;--s2:#2980B9;--s3:#27AE60;
-}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:15px;padding-bottom:140px}
-.hdr{background:var(--navy);padding:20px 16px 18px}
-.hdr-brand{font-size:10px;letter-spacing:2px;color:#7EC8E3;text-transform:uppercase;margin-bottom:4px}
-.hdr-title{font-size:19px;font-weight:700;color:#fff}
-.hdr-sub{font-size:11px;color:#93A8C8;margin-top:3px}
-.sbar{position:sticky;top:0;z-index:100;background:var(--navy);border-bottom:2px solid var(--blue);padding:9px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
-.sbar-block{display:flex;flex-direction:column;align-items:center}
-.sbar-lbl{font-size:9px;color:#93A8C8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:1px}
-.sbar-val{font-size:19px;font-weight:700;color:#fff;line-height:1}
-.sbar-max{font-size:10px;color:#7EC8E3}
-.sbar-div{width:1px;background:rgba(255,255,255,.15);height:32px}
-.dpill{padding:5px 10px;border-radius:20px;font-size:11px;font-weight:700;text-align:center;white-space:nowrap}
-.p-go{background:#1A7A45;color:#fff}.p-rev{background:#CA6F1E;color:#fff}
-.p-skip{background:#C0392B;color:#fff}.p-emp{background:#3A5070;color:#93A8C8}
-.sec{margin:12px 10px 0}
-.sh{padding:10px 13px;border-radius:9px 9px 0 0;display:flex;align-items:center;gap:9px}
-.sh-purple{background:var(--purple)}.sh-blue{background:var(--blue)}.sh-navy{background:var(--navy)}
-.sl{width:26px;height:26px;background:rgba(255,255,255,.2);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex-shrink:0}
-.st{font-size:13px;font-weight:700;color:#fff}.ss{font-size:10px;opacity:.8;color:#fff;margin-top:1px}
-.sb{background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 9px 9px;overflow:hidden}
-.fr{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border)}
-.fr:last-child{border-bottom:none}
-.fld{padding:10px 11px}
-.fld:first-child{border-right:1px solid var(--border)}
-.fld label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:3px}
-.fld input{width:100%;border:none;outline:none;font-size:14px;color:var(--text);background:transparent;font-family:inherit}
-.fld input::placeholder{color:#C0C8D8}
-.cuaca-row{padding:10px 11px;border-bottom:1px solid var(--border)}
-.cuaca-row label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:7px}
-.cuaca-opts{display:flex;gap:7px;flex-wrap:wrap}
-.cbtn{padding:5px 11px;border-radius:20px;border:1.5px solid var(--border);font-size:11px;color:var(--muted);background:transparent;cursor:pointer;font-family:inherit}
-.cbtn.active{border-color:var(--blue);background:#EBF3FB;color:var(--blue);font-weight:600}
-.gate-bar{background:#F3EEF8;border-bottom:1px solid var(--border);padding:11px 13px;display:flex;align-items:center;justify-content:space-between}
-.gate-bar-lbl{font-size:11px;color:var(--purple);font-weight:600}
-.gate-bar-score{font-size:20px;font-weight:800;color:var(--purple)}
-.gate-bar-max{font-size:11px;color:var(--purple);opacity:.6}
-.gate-pill{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
-.gp-ok{background:#D7BDE2;color:var(--purple)}.gp-warn{background:#FAD7A0;color:#7D6608}.gp-fail{background:#FADBD8;color:var(--red)}
-.si{padding:13px 11px;border-bottom:1px solid var(--border)}
-.si:last-child{border-bottom:none}
-.sih{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:9px}
-.snum{width:26px;height:26px;border-radius:7px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.snum-g{background:var(--purple);color:#D7BDE2}
-.snum-b{background:var(--navy);color:#7EC8E3}
-.stit{font-size:12px;font-weight:700;color:var(--text);flex:1}
-.ssub{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.35}
-.sbadge{font-size:12px;font-weight:700;width:30px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.sbadge-g{background:var(--purple);color:#fff}
-.sbadge-b{background:var(--navy);color:#fff}
-.sopts{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:7px}
-.sopt{padding:8px 3px;border-radius:7px;border:2px solid var(--border);cursor:pointer;font-family:inherit;background:transparent;text-align:center}
-.son{font-size:17px;font-weight:700;color:var(--muted);line-height:1}
-.sol{font-size:8px;color:var(--muted);margin-top:2px;line-height:1.2}
-.sopt.active-0{border-color:var(--s0);background:#FDEDEC}.sopt.active-0 .son{color:var(--s0)}
-.sopt.active-1{border-color:var(--s1);background:#FEF5E7}.sopt.active-1 .son{color:var(--s1)}
-.sopt.active-2{border-color:var(--s2);background:#EBF5FB}.sopt.active-2 .son{color:var(--s2)}
-.sopt.active-3{border-color:var(--s3);background:#EAFAF1}.sopt.active-3 .son{color:var(--s3)}
-.snote{width:100%;border:1px solid var(--border);border-radius:5px;padding:7px 9px;font-size:11px;font-family:inherit;color:var(--text);background:#FAFBFD;resize:none}
-.snote:focus{outline:none;border-color:var(--blue)}
-.rtbl{width:100%;border-collapse:collapse}
-.rtbl td{padding:8px 11px;font-size:12px;border-bottom:1px solid var(--border)}
-.rtbl tr:last-child td{border-bottom:none}
-.rn{width:28px;font-weight:700;color:var(--navy)}
-.rng{width:28px;font-weight:700;color:var(--purple)}
-.rs{text-align:right;font-weight:700;color:var(--navy);width:55px}
-.rsg{text-align:right;font-weight:700;color:var(--purple);width:55px}
-.rtot-gate{background:var(--purple);padding:11px 11px;display:flex;align-items:center;justify-content:space-between}
-.rtot-final{background:var(--navy);padding:12px 11px;border-radius:0 0 9px 9px;display:flex;align-items:center;justify-content:space-between}
-.rtl{font-size:11px;font-weight:700;color:#93A8C8}
-.rtlg{font-size:11px;font-weight:700;color:#D7BDE2}
-.rts{font-size:22px;font-weight:700;color:#fff}
-.rtm{font-size:11px;color:#7EC8E3}
-.rtmg{font-size:11px;color:#D7BDE2}
-.gwarn{margin:8px 10px;background:#FADBD8;border:2px solid var(--red);border-radius:9px;padding:11px 12px;display:none}
-.gwarn.show{display:block}
-.gwt{font-size:13px;font-weight:700;color:var(--red);margin-bottom:3px}
-.gwd{font-size:11px;color:#922B21}
-.dbox{margin:12px 10px 0;border-radius:10px;overflow:hidden}
-.d-go{background:#1A7A45}.d-rev{background:#CA6F1E}
-.d-skip{background:#C0392B}.d-emp{background:var(--navy)}
-.din{padding:18px 14px}
-.dv{font-size:28px;font-weight:800;color:#fff;letter-spacing:-1px}
-.dd{font-size:12px;color:rgba(255,255,255,.85);margin-top:5px;line-height:1.45}
-.ds{margin-top:9px;font-size:11px;color:rgba(255,255,255,.65)}
-.cat{margin:12px 10px 0;background:var(--card);border:1px solid var(--border);border-radius:9px;padding:13px 11px}
-.cal{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px}
-.cata{width:100%;border:1px solid var(--border);border-radius:7px;padding:9px;font-size:12px;font-family:inherit;color:var(--text);background:#FAFBFD;resize:none;min-height:70px}
-.cata:focus{outline:none;border-color:var(--blue)}
-.nb{margin:12px 10px 0;background:#FEF9E7;border-left:4px solid #CA6F1E;border-radius:0 7px 7px 0;padding:11px 12px}
-.nb p{font-size:11px;color:#7E5109;line-height:1.5}
-.nb p+p{margin-top:5px}
-.cfg{margin:12px 10px 0;background:var(--card);border:1px solid var(--border);border-radius:9px;padding:13px 11px}
-.cfg-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:6px}
-.cfg-input{width:100%;border:1px solid var(--border);border-radius:6px;padding:9px;font-size:12px;font-family:inherit;color:var(--text);background:#FAFBFD}
-.cfg-input:focus{outline:none;border-color:var(--blue)}
-.cfg-row{display:flex;gap:8px;margin-top:7px;align-items:center}
-.cfg-save{padding:8px 14px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
-.cfg-ok{font-size:11px;color:var(--green);display:none}
-.submit-area{padding:12px 10px 0}
-.btn-kirim{width:100%;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
-.btn-kirim.sending{background:#93A8C8;cursor:wait}
-.btn-kirim.success{background:var(--green)}
-.btn-kirim.offline{background:#CA6F1E}
-.btn-salin{width:100%;padding:11px;background:transparent;color:var(--navy);border:2px solid var(--border);border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}
-.status-box{margin:9px 0 0;padding:11px 13px;border-radius:7px;font-size:12px;display:none}
-.status-box.show{display:block}
-.s-ok{background:#EAF5EF;border:1.5px solid var(--green);color:var(--green)}
-.s-err{background:#FDEDEC;border:1.5px solid var(--red);color:var(--red)}
-.s-off{background:#FEF9E7;border:1.5px solid #CA6F1E;color:#CA6F1E}
-.qbox{margin:10px 10px 0;background:var(--card);border:2px solid #CA6F1E;border-radius:9px;overflow:hidden;display:none}
-.qbox.show{display:block}
-.qhdr{background:#CA6F1E;padding:9px 13px;font-size:12px;font-weight:700;color:#fff;display:flex;justify-content:space-between;align-items:center}
-.qlist{padding:9px 13px;font-size:11px}
-.qitem{padding:5px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
-.qitem:last-child{border-bottom:none}
-.btn-sync{padding:5px 12px;background:#fff;color:#CA6F1E;border:none;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}</style>
-</head>
-<body>
+// ================================================================
+// RAHAYU FARMA — Google Apps Script v8
+// Menerima fetch POST dengan Content-Type: text/plain dari GitHub Pages
+// ================================================================
 
-<div class="hdr">
-  <div class="hdr-brand">Rahayu Farma &middot; Site Location Analysis</div>
-  <div class="hdr-title">Observasi Pendahuluan</div>
-  <div class="hdr-sub">Screening awal titik potensial &middot; 15-20 menit per lokasi</div>
-</div>
+var SHEET_ID = "1CNdpmmmxPuy77xxf8mM8MXBHB9JSvm_YzzrIbzYBqxA";
 
-<div class="sbar">
-  <div class="sbar-block"><div class="sbar-lbl">Gate</div><span class="sbar-val" id="gate-num">0</span><span class="sbar-max">/ 12</span></div>
-  <div class="sbar-div"></div>
-  <div class="sbar-block"><div class="sbar-lbl">Skor B</div><span class="sbar-val" id="b-num">0</span><span class="sbar-max">/ 21</span></div>
-  <div class="sbar-div"></div>
-  <div class="sbar-block"><div class="sbar-lbl">Total</div><span class="sbar-val" id="tot-num">0</span><span class="sbar-max">/ 33</span></div>
-  <div class="dpill p-emp" id="bp">Belum diisi</div>
-</div>
-
-<div class="cfg">
-  <label class="cfg-lbl">URL Google Apps Script</label>
-  <input class="cfg-input" type="url" id="ep-url" placeholder="https://script.google.com/macros/s/XXXX/exec">
-  <div class="cfg-row"><button class="cfg-save" onclick="saveEp()">Simpan URL</button><span class="cfg-ok" id="cfg-ok">Tersimpan</span></div>
-</div>
-
-<div class="sec">
-  <div class="sh sh-navy"><div class="sl">ID</div><div><div class="st">Identitas Titik</div><div class="ss">Isi sebelum mulai observasi</div></div></div>
-  <div class="sb">
-    <div class="fr"><div class="fld"><label>Kode Titik</label><input type="text" placeholder="RF-[Kec]-[No]" id="kode"></div><div class="fld"><label>Tanggal</label><input type="date" id="tgl"></div></div>
-    <div class="fr" style="grid-template-columns:1fr"><div class="fld" style="border-right:none"><label>Nama / Deskripsi Lokasi</label><input type="text" placeholder="Misal: Depan SDN Cipacing, Jl. Raya Majalengka" id="nama"></div></div>
-    <div class="fr"><div class="fld"><label>Kecamatan</label><input type="text" placeholder="Kecamatan" id="kec"></div><div class="fld"><label>Kabupaten</label><input type="text" placeholder="Kabupaten" id="kab"></div></div>
-    <div class="fr" style="grid-template-columns:1fr"><div class="fld" style="border-right:none"><label>Observer</label><input type="text" placeholder="Nama surveyor" id="obs"></div></div>
-    <div class="cuaca-row">
-      <label>Kondisi Cuaca</label>
-      <div class="cuaca-opts">
-        <button class="cbtn">Cerah</button>
-        <button class="cbtn">Berawan</button>
-        <button class="cbtn">Hujan ringan</button>
-        <button class="cbtn">Hujan deras</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="sec">
-  <div class="sh sh-purple"><div class="sl">A</div><div><div class="st">Gate Check &mdash; Scoring (Maks 12)</div><div class="ss">Skor Gate &lt; 7 = otomatis SKIP</div></div></div>
-  <div class="sb">
-    <div class="gate-bar">
-      <div class="gate-bar-lbl">Total Skor Gate</div>
-      <div style="display:flex;align-items:baseline;gap:4px"><span class="gate-bar-score" id="g-score">0</span><span class="gate-bar-max">/ 12</span></div>
-      <div class="gate-pill gp-ok" id="g-pill">Belum lengkap</div>
-    </div>
-    
-<div class="si">
-  <div class="sih">
-    <div class="snum snum-g">G1</div>
-    <div style="flex:1"><div class="stit">Keberadaan Anchor Ekonomi</div><div class="ssub">Minimarket chain (Alfamart/Indomaret) terdekat dari titik ini</div></div>
-    <div class="sbadge sbadge-g" id="gb0">-</div>
-  </div>
-  <div class="sopts"><button class="sopt" data-v="0" data-fn="g" data-idx="0" onclick="pick(this)"><div class="son">0</div><div class="sol">Tidak ada dalam 2km</div></button><button class="sopt" data-v="1" data-fn="g" data-idx="0" onclick="pick(this)"><div class="son">1</div><div class="sol">Ada 1-2km jauhnya</div></button><button class="sopt" data-v="2" data-fn="g" data-idx="0" onclick="pick(this)"><div class="son">2</div><div class="sol">Ada dalam 500m</div></button><button class="sopt" data-v="3" data-fn="g" data-idx="0" onclick="pick(this)"><div class="son">3</div><div class="sol">2+ chain atau pasar</div></button></div>
-  <textarea class="snote" rows="1" placeholder="Nama dan jarak minimarket terdekat..."></textarea>
-</div>
-<div class="si">
-  <div class="sih">
-    <div class="snum snum-g">G2</div>
-    <div style="flex:1"><div class="stit">Aktivitas Ekonomi Harian</div><div class="ssub">Bukti transaksi nyata yang bisa diamati langsung di lapangan</div></div>
-    <div class="sbadge sbadge-g" id="gb1">-</div>
-  </div>
-  <div class="sopts"><button class="sopt" data-v="0" data-fn="g" data-idx="1" onclick="pick(this)"><div class="son">0</div><div class="sol">Tidak ada aktivitas jual-beli</div></button><button class="sopt" data-v="1" data-fn="g" data-idx="1" onclick="pick(this)"><div class="son">1</div><div class="sol">Warung buka tapi sangat sepi</div></button><button class="sopt" data-v="2" data-fn="g" data-idx="1" onclick="pick(this)"><div class="son">2</div><div class="sol">Beberapa toko aktif, ada pembeli</div></button><button class="sopt" data-v="3" data-fn="g" data-idx="1" onclick="pick(this)"><div class="son">3</div><div class="sol">Transaksi ramai, ada pasar atau lapak</div></button></div>
-  <textarea class="snote" rows="1" placeholder="Jenis aktivitas yang terlihat..."></textarea>
-</div>
-<div class="si">
-  <div class="sih">
-    <div class="snum snum-g">G3</div>
-    <div style="flex:1"><div class="stit">Infrastruktur Dasar</div><div class="ssub">Cek tiang listrik PLN, coba sinyal HP, lihat kondisi jalan</div></div>
-    <div class="sbadge sbadge-g" id="gb2">-</div>
-  </div>
-  <div class="sopts"><button class="sopt" data-v="0" data-fn="g" data-idx="2" onclick="pick(this)"><div class="son">0</div><div class="sol">Tidak ada PLN, sinyal mati</div></button><button class="sopt" data-v="1" data-fn="g" data-idx="2" onclick="pick(this)"><div class="son">1</div><div class="sol">PLN ada tapi sering mati, sinyal lemah</div></button><button class="sopt" data-v="2" data-fn="g" data-idx="2" onclick="pick(this)"><div class="son">2</div><div class="sol">PLN stabil, sinyal 3G/4G ada</div></button><button class="sopt" data-v="3" data-fn="g" data-idx="2" onclick="pick(this)"><div class="son">3</div><div class="sol">PLN stabil, sinyal 4G kuat, jalan aspal baik</div></button></div>
-  <textarea class="snote" rows="1" placeholder="Kondisi sinyal dan listrik yang teramati..."></textarea>
-</div>
-<div class="si">
-  <div class="sih">
-    <div class="snum snum-g">G4</div>
-    <div style="flex:1"><div class="stit">Daya Beli Visual</div><div class="ssub">Estimasi kemampuan ekonomi dari kondisi yang terlihat di sekitar</div></div>
-    <div class="sbadge sbadge-g" id="gb3">-</div>
-  </div>
-  <div class="sopts"><button class="sopt" data-v="0" data-fn="g" data-idx="3" onclick="pick(this)"><div class="son">0</div><div class="sol">Bangunan sangat sederhana, tidak ada kendaraan</div></button><button class="sopt" data-v="1" data-fn="g" data-idx="3" onclick="pick(this)"><div class="son">1</div><div class="sol">Rumah sederhana, motor tua dominan</div></button><button class="sopt" data-v="2" data-fn="g" data-idx="3" onclick="pick(this)"><div class="son">2</div><div class="sol">Campuran sederhana-menengah, ada motor baru</div></button><button class="sopt" data-v="3" data-fn="g" data-idx="3" onclick="pick(this)"><div class="son">3</div><div class="sol">Rumah menengah, mobil ada, ATM terlihat</div></button></div>
-  <textarea class="snote" rows="1" placeholder="Tanda daya beli yang terlihat..."></textarea>
-</div>
-  </div>
-</div>
-
-<div class="gwarn" id="gw"><div class="gwt">Gate Check di bawah minimum &mdash; SKIP</div><div class="gwd">Skor Gate kurang dari 7/12. Titik ini tidak layak dilanjutkan ke survey penuh.</div></div>
-
-<div class="sec">
-  <div class="sh sh-blue"><div class="sl">B</div><div><div class="st">Scoring &mdash; 7 Indikator (Maks 21)</div><div class="ss">Isi setelah Gate lulus minimum 7/12</div></div></div>
-  <div class="sb">
-<div class="si">
-  <div class="sih">
-    <div class="snum snum-b">1</div>
-    <div style="flex:1"><div class="stit">Traffic Jalan</div><div class="ssub">Amati arus kendaraan dan pejalan kaki selama 3 menit</div></div>
-    <div class="sbadge sbadge-b" id="bb0">-</div>
-  </div>
-  <div class="sopts"><button class="sopt" data-v="0" data-fn="b" data-idx="0" onclick="pick(this)"><div class="son">0</div><div class="sol">Sepi sekali</div></button><button class="sopt" data-v="1" data-fn="b" data-idx="0" onclick="pick(this)"><div class="son">1</div><div class="sol">Jarang, motor tua</div></button><button class="sopt" data-v="2" data-fn="b" data-idx="0" onclick="pick(this)"><div class="son">2</div><div class="sol">Cukup ramai</div></button><button class="sopt" data-v="3" data-fn="b" data-idx="0" onclick="pick(this)"><div class="son">3</div><div class="sol">Ramai konsisten</div></button></div>
-  <textarea class="snote" rows="1" placeholder="Catatan traffic..."></textarea>
-</div>
-<div class="si">
-  <div class="sih">
-    <div class="snum snum-b">2</div>
-    <div style="flex:1"><div class="stit">Kepadatan Pemukiman</div><div class="ssub">Lihat segala arah dalam jangkauan pandang</div></div>
-    <div class="sbadge sbadge-b" id="bb1">-</div>
-  </div>
-  <div class="sopts"><button class="sopt" data-v="0" data-fn="b" data-idx="1" onclick="pick(this)"><div class="son">0</div><div class="sol">Sawah atau kosong</div></button><button class="sopt" data-v="1" data-fn="b" data-idx="1" onclick="pick(this)"><div class="son">1</div><div class="sol">Jarang tersebar</div></button><button class="sopt" data-v="2" data-fn="b" data-idx="1" onclick="pick(this)"><div class="son">2</div><div class="sol">Sedang, cluster</div></button><button class="sopt" data-v="3" data-fn="b" data-idx="1" onclick="pick(this)"><div class="son">3</div><div class="sol">Padat, gang aktif</div></button></div>
-  <textarea class="snote" rows="1" placeholder="Tipe hunian..."></textarea>
-</div>
-<div class="si">
-  <div class="sih">
-    <div class="snum snum-b">3</div>
-    <div style="flex:1"><div class="stit">Anchor Ekonomi Visible</div><div class="ssub">Minimarket chain dan fasilitas komersial terlihat dari titik</div></div>
-    <div class="sbadge sbadge-b" id="bb2">-</div>
-  </div>
-  <div class="sopts"><button class="sopt" data-v="0" data-fn="b" data-idx="2" onclick="pick(this)"><div class="son">0</div><div class="sol">Warung kecil saja</div></button><button class="sopt" data-v="1" data-fn="b" data-idx="2" onclick="pick(this)"><div class="son">1</div><div class="sol">1 chain plus toko</div></button><button class="sopt" data-v="2" data-fn="b" data-idx="2" onclick="pick(this)"><div class="son">2</div><div class="sol">1-2 chain plus ruko</div></button><button class="sopt" data-v="3" data-fn="b" data-idx="2" onclick="pick(this)"><div class="son">3</div><div class="sol">2+ chain plus pasar</div></button></div>
-  <textarea class="snote" rows="1" placeholder="Nama minimarket yang terlihat..."></textarea>
-</div>
-<div class="si">
-  <div class="sih">
-    <div class="snum snum-b">4</div>
-    <div style="flex:1"><div class="stit">Faskes dan Potensi Nakes</div><div class="ssub">Plang klinik, puskesmas, dokter, bidan, mantri dalam 500m</div></div>
-    <div class="sbadge sbadge-b" id="bb3">-</div>
-  </div>
-  <div class="sopts"><button class="sopt" data-v="0" data-fn="b" data-idx="3" onclick="pick(this)"><div class="son">0</div><div class="sol">Tidak ada faskes</div></button><button class="sopt" data-v="1" data-fn="b" data-idx="3" onclick="pick(this)"><div class="son">1</div><div class="sol">1-2 bidan atau mantri</div></button><button class="sopt" data-v="2" data-fn="b" data-idx="3" onclick="pick(this)"><div class="son">2</div><div class="sol">Klinik atau dokter ada</div></button><button class="sopt" data-v="3" data-fn="b" data-idx="3" onclick="pick(this)"><div class="son">3</div><div class="sol">2+ faskes berbeda</div></button></div>
-  <textarea class="snote" rows="1" placeholder="Nama faskes yang terlihat..."></textarea>
-</div>
-<div class="si">
-  <div class="sih">
-    <div class="snum snum-b">5</div>
-    <div style="flex:1"><div class="stit">Kompetitor Apotek</div><div class="ssub">Apotek chain nasional dan apotek lokal dalam jangkauan 300m</div></div>
-    <div class="sbadge sbadge-b" id="bb4">-</div>
-  </div>
-  <div class="sopts"><button class="sopt" data-v="0" data-fn="b" data-idx="4" onclick="pick(this)"><div class="son">0</div><div class="sol">Ada apotek chain (KF/K-24) dalam 300m</div></button><button class="sopt" data-v="1" data-fn="b" data-idx="4" onclick="pick(this)"><div class="son">1</div><div class="sol">2+ apotek lokal, chain jauh</div></button><button class="sopt" data-v="2" data-fn="b" data-idx="4" onclick="pick(this)"><div class="son">2</div><div class="sol">1 apotek lokal saja</div></button><button class="sopt" data-v="3" data-fn="b" data-idx="4" onclick="pick(this)"><div class="son">3</div><div class="sol">Tidak ada apotek (blue ocean)</div></button></div>
-  <textarea class="snote" rows="1" placeholder="Nama apotek, jenis, dan jaraknya..."></textarea>
-</div>
-<div class="si">
-  <div class="sih">
-    <div class="snum snum-b">6</div>
-    <div style="flex:1"><div class="stit">Aksesibilitas Lokasi</div><div class="ssub">Lebar jalan, kemudahan masuk-keluar, parkir, visibilitas</div></div>
-    <div class="sbadge sbadge-b" id="bb5">-</div>
-  </div>
-  <div class="sopts"><button class="sopt" data-v="0" data-fn="b" data-idx="5" onclick="pick(this)"><div class="son">0</div><div class="sol">Sempit, susah akses</div></button><button class="sopt" data-v="1" data-fn="b" data-idx="5" onclick="pick(this)"><div class="son">1</div><div class="sol">1 arah, parkir terbatas</div></button><button class="sopt" data-v="2" data-fn="b" data-idx="5" onclick="pick(this)"><div class="son">2</div><div class="sol">2 lajur, ada parkir</div></button><button class="sopt" data-v="3" data-fn="b" data-idx="5" onclick="pick(this)"><div class="son">3</div><div class="sol">Lebar, 2 arah, parkir luas</div></button></div>
-  <textarea class="snote" rows="1" placeholder="Lebar jalan perkiraan dan catatan akses..."></textarea>
-</div>
-<div class="si">
-  <div class="sih">
-    <div class="snum snum-b">7</div>
-    <div style="flex:1"><div class="stit">Ketersediaan Bangunan atau Ruko Sewa</div><div class="ssub">Tanda disewakan atau bangunan kosong layak pakai</div></div>
-    <div class="sbadge sbadge-b" id="bb6">-</div>
-  </div>
-  <div class="sopts"><button class="sopt" data-v="0" data-fn="b" data-idx="6" onclick="pick(this)"><div class="son">0</div><div class="sol">Tidak ada yang bisa sewa</div></button><button class="sopt" data-v="1" data-fn="b" data-idx="6" onclick="pick(this)"><div class="son">1</div><div class="sol">Ada tapi kecil atau rusak</div></button><button class="sopt" data-v="2" data-fn="b" data-idx="6" onclick="pick(this)"><div class="son">2</div><div class="sol">1 ruko layak plus tanda sewa</div></button><button class="sopt" data-v="3" data-fn="b" data-idx="6" onclick="pick(this)"><div class="son">3</div><div class="sol">2+ pilihan plus ada kontak</div></button></div>
-  <textarea class="snote" rows="1" placeholder="Alamat dan nomor kontak pemilik jika ada..."></textarea>
-</div></div>
-</div>
-
-<div class="sec">
-  <div class="sh sh-navy"><div class="sl">C</div><div><div class="st">Rekapitulasi</div></div></div>
-  <div class="sb" style="border-radius:0"><table class="rtbl"><tr style="background:#F3EEF8"><td class="rng">G1</td><td>Keberadaan Anchor Ekonomi</td><td class="rsg" id="rg0">-</td></tr><tr style="background:#F3EEF8"><td class="rng">G2</td><td>Aktivitas Ekonomi Harian</td><td class="rsg" id="rg1">-</td></tr><tr style="background:#F3EEF8"><td class="rng">G3</td><td>Infrastruktur Dasar</td><td class="rsg" id="rg2">-</td></tr><tr style="background:#F3EEF8"><td class="rng">G4</td><td>Daya Beli Visual</td><td class="rsg" id="rg3">-</td></tr></table></div>
-  <div class="rtot-gate"><div class="rtlg">GATE CHECK</div><div><span class="rts" id="rgt">0</span><span class="rtmg"> / 12 &mdash; min. 7 untuk lanjut</span></div></div>
-  <div class="sb" style="border-radius:0;border-top:none;margin-top:4px"><table class="rtbl"><tr><td class="rn">1</td><td>Traffic Jalan</td><td class="rs" id="rb0">-</td></tr><tr><td class="rn">2</td><td>Kepadatan Pemukiman</td><td class="rs" id="rb1">-</td></tr><tr><td class="rn">3</td><td>Anchor Ekonomi Visible</td><td class="rs" id="rb2">-</td></tr><tr><td class="rn">4</td><td>Faskes dan Potensi Nakes</td><td class="rs" id="rb3">-</td></tr><tr><td class="rn">5</td><td>Kompetitor Apotek</td><td class="rs" id="rb4">-</td></tr><tr><td class="rn">6</td><td>Aksesibilitas Lokasi</td><td class="rs" id="rb5">-</td></tr><tr><td class="rn">7</td><td>Ketersediaan Bangunan atau Ruko Sewa</td><td class="rs" id="rb6">-</td></tr></table></div>
-  <div class="rtot-final"><div class="rtl">TOTAL (Gate + B)</div><div><span class="rts" id="rtot">0</span><span class="rtm"> / 33</span></div></div>
-</div>
-
-<div class="dbox d-emp" id="db"><div class="din"><div class="dv" id="dv">Belum diisi</div><div class="dd" id="dd">Isi Gate Check dan semua indikator untuk mendapatkan keputusan.</div><div class="ds" id="ds"></div></div></div>
-
-<div class="cat"><div class="cal">Catatan Observer</div><textarea class="cata" rows="3" placeholder="Kesan umum, potensi khusus, atau hal yang perlu diverifikasi saat survey penuh..." id="catatan"></textarea></div>
-
-<div class="nb">
-  <p><strong>Threshold:</strong> Gate min. 7/12 untuk lanjut &mdash; Skor B: GO &ge;15 | REVIEW 10-14 | SKIP &le;9</p>
-  <p>Channel nakes (BPM, mantri, klinik) = 20,6% target Normal. Harus dibangun sebelum apotek buka.</p>
-</div>
-
-<div class="qbox" id="qbox">
-  <div class="qhdr"><span>Antrian belum terkirim: <span id="qcount">0</span> titik</span><button class="btn-sync" onclick="syncQ()">Kirim Sekarang</button></div>
-  <div class="qlist" id="qlist"></div>
-</div>
-
-<div class="submit-area">
-  <button class="btn-kirim" id="btn-k" onclick="kirim()">Kirim ke Google Sheet</button>
-  <div class="status-box" id="sbox"></div>
-  <button class="btn-salin" onclick="salin()">Salin Ringkasan untuk WhatsApp</button>
-</div>
-
-<script>
-var gc = [-1,-1,-1,-1];
-var bc = [-1,-1,-1,-1,-1,-1,-1];
-var cuaca = '';
-var GD = [["Tidak ada chain 2km","Chain 1-2km","Chain dalam 500m","2+ chain atau pasar"],["Tidak ada aktivitas","Warung sepi","Toko aktif, ada pembeli","Transaksi ramai"],["Tidak ada PLN/sinyal","PLN/sinyal lemah","PLN stabil, sinyal 3G/4G","PLN stabil, 4G kuat"],["Bangunan sangat sederhana","Motor tua dominan","Campuran sederhana-menengah","Rumah menengah, ada mobil"]];
-var BD = [["Sepi sekali","Jarang motor tua","Cukup ramai","Ramai konsisten"],["Sawah atau kosong","Jarang tersebar","Sedang cluster","Padat gang aktif"],["Warung kecil saja","1 chain + toko","1-2 chain + ruko","2+ chain + pasar"],["Tidak ada faskes","1-2 bidan/mantri","Klinik/dokter ada","2+ faskes berbeda"],["Ada apotek chain <300m","2+ apotek lokal","1 apotek lokal","Blue ocean"],["Sempit susah akses","1 arah terbatas","2 lajur ada parkir","Lebar 2 arah"],["Tidak ada sewa","Kecil atau rusak","1 ruko layak + sewa","2+ pilihan + kontak"]];
-
-function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
-function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
-function saveEp(){var u=document.getElementById('ep-url').value.trim();if(!u){alert('URL kosong');return;}lsSet('rf_ep',u);var o=document.getElementById('cfg-ok');o.style.display='inline';setTimeout(function(){o.style.display='none';},2000);}
-function loadEp(){var s=lsGet('rf_ep')||'';document.getElementById('ep-url').value=s;return s;}
-function setCuaca(btn,val){cuaca=val;var btns=document.querySelectorAll('.cbtn');var i;for(i=0;i<btns.length;i++)btns[i].classList.remove('active');btn.classList.add('active');}
-
-function pick(btn){
-  var fn=btn.getAttribute('data-fn');
-  var idx=parseInt(btn.getAttribute('data-idx'),10);
-  var val=parseInt(btn.getAttribute('data-v'),10);
-  if(!fn||isNaN(idx)||isNaN(val))return;
-  var container=btn.parentNode;
-  var siblings=container.querySelectorAll('.sopt');
-  var i,s;
-  for(i=0;i<siblings.length;i++){
-    s=siblings[i];
-    s.classList.remove('active-0');
-    s.classList.remove('active-1');
-    s.classList.remove('active-2');
-    s.classList.remove('active-3');
-  }
-  btn.classList.add('active-'+val);
-  var badge=document.getElementById((fn==='g'?'gb':'bb')+idx);
-  var rekap=document.getElementById((fn==='g'?'rg':'rb')+idx);
-  if(badge){badge.textContent=val;badge.style.background=['#E74C3C','#E67E22','#2980B9','#27AE60'][val];}
-  if(rekap){rekap.textContent=val+'/3';}
-  if(fn==='g')gc[idx]=val; else bc[idx]=val;
-  upd();
+// ── doGet: cek koneksi ────────────────────────────────────────
+function doGet(e) {
+  return respond({ status: "ok", message: "Endpoint aktif - v8" });
 }
 
-function sumArr(a){var t=0,i;for(i=0;i<a.length;i++)if(a[i]>=0)t+=a[i];return t;}
-function allFilled(a){var i;for(i=0;i<a.length;i++)if(a[i]<0)return false;return true;}
+// ── doPost: ENDPOINT UTAMA ────────────────────────────────────
+// Form di GitHub Pages kirim via:
+// fetch(url, { method:'POST', body: JSON.stringify(data), headers:{'Content-Type':'text/plain'} })
+// Apps Script membaca dari e.postData.contents
+function doPost(e) {
+  try {
+    var data;
 
-function upd(){
-  var gT=sumArr(gc),bT=sumArr(bc),tot=gT+bT;
-  var gA=allFilled(gc),bA=allFilled(bc);
-  document.getElementById('gate-num').textContent=gT;
-  document.getElementById('b-num').textContent=bT;
-  document.getElementById('tot-num').textContent=tot;
-  document.getElementById('g-score').textContent=gT;
-  document.getElementById('rgt').textContent=gT;
-  document.getElementById('rtot').textContent=tot;
-  var gp=document.getElementById('g-pill');
-  if(!gA){gp.className='gate-pill gp-ok';gp.textContent='Belum lengkap';}
-  else if(gT>=9){gp.className='gate-pill gp-ok';gp.textContent='Kuat ('+gT+'/12)';}
-  else if(gT>=7){gp.className='gate-pill gp-warn';gp.textContent='Cukup ('+gT+'/12)';}
-  else{gp.className='gate-pill gp-fail';gp.textContent='Lemah ('+gT+'/12)';}
-  var gw=document.getElementById('gw');
-  var db=document.getElementById('db'),bp=document.getElementById('bp');
-  var dv=document.getElementById('dv'),dd=document.getElementById('dd'),ds=document.getElementById('ds');
-  if(gA&&gT<7){
-    gw.classList.add('show');db.className='dbox d-skip';
-    dv.textContent='SKIP';
-    dd.textContent='Gate terlalu lemah ('+gT+'/12, minimum 7). Tidak layak dilanjutkan.';
-    ds.textContent='Gate: '+gT+'/12 | Skor B: '+bT+'/21 | Total: '+tot+'/33';
-    bp.className='dpill p-skip';bp.textContent='Gate Lemah';return;
-  }
-  gw.classList.remove('show');
-  if(!gA||!bA){
-    db.className='dbox d-emp';dv.textContent=tot+' / 33';
-    dd.textContent='Isi semua Gate Check dan 7 indikator untuk keputusan final.';
-    ds.textContent='';bp.className='dpill p-emp';bp.textContent=tot+' / 33';
-  }else if(bT>=15){
-    db.className='dbox d-go';dv.textContent='GO';
-    dd.textContent='Lanjutkan ke Survey Pendahuluan Gravitasi Ekonomi (v7).';
-    ds.textContent='Gate: '+gT+'/12 | Skor B: '+bT+'/21 | Total: '+tot+'/33';
-    bp.className='dpill p-go';bp.textContent='GO '+tot+'/33';
-  }else if(bT>=10){
-    db.className='dbox d-rev';dv.textContent='REVIEW';
-    dd.textContent='Diskusikan dengan koordinator sebelum memutuskan survey penuh.';
-    ds.textContent='Gate: '+gT+'/12 | Skor B: '+bT+'/21 | Total: '+tot+'/33';
-    bp.className='dpill p-rev';bp.textContent='Review '+tot+'/33';
-  }else{
-    db.className='dbox d-skip';dv.textContent='SKIP';
-    dd.textContent='Skor B terlalu rendah. Cari titik alternatif.';
-    ds.textContent='Gate: '+gT+'/12 | Skor B: '+bT+'/21 | Total: '+tot+'/33';
-    bp.className='dpill p-skip';bp.textContent='Skip '+tot+'/33';
+    // Baca dari POST body (fetch dengan Content-Type: text/plain)
+    if (e.postData && e.postData.contents) {
+      data = JSON.parse(e.postData.contents);
+    }
+    // Fallback: form encoded
+    else if (e.parameter && e.parameter.payload) {
+      data = JSON.parse(e.parameter.payload);
+    }
+    else {
+      throw new Error("Tidak ada data diterima");
+    }
+
+    var result = tulisData(data);
+    Logger.log("OK - baris: " + result.row + " | kode: " + result.kode);
+    return respond(result);
+
+  } catch (err) {
+    Logger.log("Error: " + err.toString());
+    return respond({ status: "error", message: err.toString() });
   }
 }
 
-function getData(){
-  return{
-    kode:document.getElementById('kode').value.trim(),
-    nama:document.getElementById('nama').value.trim(),
-    kec:document.getElementById('kec').value.trim(),
-    kab:document.getElementById('kab').value.trim(),
-    tgl:document.getElementById('tgl').value,
-    observer:document.getElementById('obs').value.trim(),
-    cuaca:cuaca,
-    g1:gc[0]>=0?gc[0]:null,g2:gc[1]>=0?gc[1]:null,
-    g3:gc[2]>=0?gc[2]:null,g4:gc[3]>=0?gc[3]:null,
-    gate_total:sumArr(gc),
-    s1:bc[0]>=0?bc[0]:null,s2:bc[1]>=0?bc[1]:null,
-    s3:bc[2]>=0?bc[2]:null,s4:bc[3]>=0?bc[3]:null,
-    s5:bc[4]>=0?bc[4]:null,s6:bc[5]>=0?bc[5]:null,
-    s7:bc[6]>=0?bc[6]:null,
-    b_total:sumArr(bc),
-    total:sumArr(gc)+sumArr(bc),
-    catatan:document.getElementById('catatan').value.trim(),
-    keputusan:document.getElementById('dv').textContent,
-    timestamp:new Date().toISOString()
-  };
-}
-
-function kirimViaImage(ep,data){
-  // Kirim via GET + Image — tidak ada CORS, tidak kena redirect issue
-  var payload = encodeURIComponent(JSON.stringify(data));
-  var url = ep + '?payload=' + payload;
-  var img = new Image();
-  img.src = url;
-}
-
-function kirim(){
-  var ep=loadEp();
-  if(!ep){showSt('err','URL Apps Script belum diisi.');return;}
-  if(!document.getElementById('kode').value.trim()){showSt('err','Kode Titik wajib diisi.');return;}
-  var data=getData();
-  var btn=document.getElementById('btn-k');
-  btn.classList.add('sending');btn.textContent='Mengirim...';btn.disabled=true;
-  try{
-    kirimViaImage(ep,data);
-    setTimeout(function(){
-      btn.classList.remove('sending');btn.disabled=false;
-      btn.classList.add('success');btn.textContent='Terkirim!';
-      showSt('ok','Data dikirim. Cek sheet untuk konfirmasi.');
-      setTimeout(function(){btn.className='btn-kirim';btn.textContent='Kirim ke Google Sheet';},3000);
-    },2000);
-  }catch(err){
-    btn.classList.remove('sending');btn.classList.add('offline');btn.disabled=false;
-    btn.textContent='Tersimpan Offline';addQ(data);
-    showSt('off','Gagal kirim. Data tersimpan di HP.');
-    setTimeout(function(){btn.className='btn-kirim';btn.textContent='Kirim ke Google Sheet';},3000);
+// ── Cari baris kosong pertama di kolom B mulai row 5 ─────────
+function getNextRow(sheet) {
+  var vals = sheet.getRange("B5:B300").getValues();
+  for (var i = 0; i < vals.length; i++) {
+    if (!vals[i][0] || vals[i][0].toString().trim() === "") {
+      return i + 5;
+    }
   }
+  return 301;
 }
 
-function getQ(){try{return JSON.parse(lsGet('rf_q')||'[]');}catch(e){return[];}}
-function saveQ(q){lsSet('rf_q',JSON.stringify(q));}
-function addQ(d){var q=getQ();q.push(d);saveQ(q);renderQ();}
-function renderQ(){
-  var q=getQ();
-  document.getElementById('qcount').textContent=q.length;
-  var box=document.getElementById('qbox'),list=document.getElementById('qlist');
-  if(!q.length){box.classList.remove('show');return;}
-  box.classList.add('show');
-  var h='',i,d;
-  for(i=0;i<q.length;i++){d=q[i];h+='<div class="qitem"><span>'+(d.kode||'-')+' - '+(d.nama||'-')+' ('+d.total+'/33)</span><small style="color:var(--muted)">'+new Date(d.timestamp).toLocaleDateString('id-ID')+'</small></div>';}
-  list.innerHTML=h;
-}
-function syncQ(){
-  var ep=loadEp();if(!ep){alert('URL belum diisi.');return;}
-  var q=getQ();if(!q.length){alert('Antrian kosong.');return;}
-  var ok=0,fail=[],done=0,i;
-  for(i=0;i<q.length;i++){
-    (function(data){
-      try{kirimViaImage(ep,data);ok++;}catch(e){fail.push(data);}
-      done++;
-      if(done===q.length){saveQ(fail);renderQ();setTimeout(function(){alert('Sync selesai. Terkirim: '+ok+' | Gagal: '+fail.length);},1500);}
-    })(q[i]);
-  }
-}
+// ── Tulis data ke sheet ───────────────────────────────────────
+function tulisData(data) {
+  var ss    = SpreadsheetApp.openById(SHEET_ID);
+  var sheet = ss.getSheets()[0];
+  var r     = getNextRow(sheet);
 
-function showSt(type,msg){
-  var b=document.getElementById('sbox');
-  b.textContent=msg;b.className='status-box show s-'+type;
-  setTimeout(function(){b.classList.remove('show');},5000);
-}
-
-// ── SALIN RINGKASAN ──
-function barStr(val,max){
-  if(val===null||val<0)return '-/'+max;
-  var s='',i;
-  for(i=0;i<val;i++)s+='[*]';
-  for(i=0;i<(max-val);i++)s+='[ ]';
-  return s+' '+val+'/'+max;
-}
-
-function salin(){
-  var d=getData();
-  var tp=d.tgl?d.tgl.split('-'):['','',''];
-  var tgl=tp.length===3?(tp[2]+'/'+tp[1]+'/'+tp[0]):'-';
-  var now=new Date();
-  var jam=now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
-  var sep='---------------------\n';
-  var gNames=['Anchor Ekonomi','Aktivitas Ekonomi Harian','Infrastruktur Dasar','Daya Beli Visual'];
-  var bNames=['Traffic Jalan','Kepadatan Pemukiman','Anchor Ekonomi Visible','Faskes dan Potensi Nakes','Kompetitor Apotek','Aksesibilitas Lokasi','Ketersediaan Ruko Sewa'];
-  var ga=[d.g1,d.g2,d.g3,d.g4];
-  var ba=[d.s1,d.s2,d.s3,d.s4,d.s5,d.s6,d.s7];
-  var i,grow='',brow='',gv,bv,cond;
-
-  for(i=0;i<gNames.length;i++){
-    gv=ga[i];
-    cond=(gv!==null&&gv>=0&&GD[i])?GD[i][gv]:'belum diisi';
-    grow+='  G'+(i+1)+'. '+gNames[i]+'\n';
-    grow+='       Skor    : '+barStr(gv,3)+'\n';
-    grow+='       Kondisi : '+cond+'\n';
-  }
-  for(i=0;i<bNames.length;i++){
-    bv=ba[i];
-    cond=(bv!==null&&bv>=0&&BD[i])?BD[i][bv]:'belum diisi';
-    brow+='  '+(i+1)+'. '+bNames[i]+'\n';
-    brow+='       Skor    : '+barStr(bv,3)+'\n';
-    brow+='       Kondisi : '+cond+'\n';
+  function n(val) {
+    if (val === null || val === undefined || val === "") return "";
+    var x = Number(val);
+    return isNaN(x) ? "" : x;
   }
 
-  var verdict=d.keputusan||'-';
-  if(verdict.indexOf('GO')>=0&&verdict.indexOf('SKIP')<0)verdict='>> GO - Lanjut Survey v7';
-  else if(verdict.indexOf('REVIEW')>=0)verdict='>> REVIEW - Koordinasikan dulu';
-  else if(verdict.indexOf('SKIP')>=0)verdict='>> SKIP - Cari titik lain';
+  sheet.getRange(r, 1).setValue(r - 4);
+  sheet.getRange(r, 2).setValue(data.kode     || "");
+  sheet.getRange(r, 3).setValue(data.nama     || "");
+  sheet.getRange(r, 4).setValue(data.kec      || "");
+  sheet.getRange(r, 5).setValue(data.kab      || "");
+  sheet.getRange(r, 6).setValue(data.tgl      || "");
+  sheet.getRange(r, 7).setValue(data.observer || "");
+  sheet.getRange(r, 8).setValue(data.cuaca    || "");
+  sheet.getRange(r, 9).setValue(n(data.g1));
+  sheet.getRange(r, 10).setValue(n(data.g2));
+  sheet.getRange(r, 11).setValue(n(data.g3));
+  sheet.getRange(r, 12).setValue(n(data.g4));
+  sheet.getRange(r, 13).setFormula('=IF(COUNTA(I'+r+':L'+r+')=4,SUM(I'+r+':L'+r+'),"")');
+  sheet.getRange(r, 14).setValue(n(data.s1));
+  sheet.getRange(r, 15).setValue(n(data.s2));
+  sheet.getRange(r, 16).setValue(n(data.s3));
+  sheet.getRange(r, 17).setValue(n(data.s4));
+  sheet.getRange(r, 18).setValue(n(data.s5));
+  sheet.getRange(r, 19).setValue(n(data.s6));
+  sheet.getRange(r, 20).setValue(n(data.s7));
+  sheet.getRange(r, 21).setFormula('=IF(COUNTA(N'+r+':T'+r+')=7,SUM(N'+r+':T'+r+'),"")');
+  sheet.getRange(r, 22).setFormula('=IF(AND(M'+r+'<>"",U'+r+'<>""),M'+r+'+U'+r+',"")');
+  sheet.getRange(r, 23).setFormula('=IF(M'+r+'="","--",IF(M'+r+'<7,"SKIP (Gate)",IF(U'+r+'="","--",IF(U'+r+'>=15,"GO",IF(U'+r+'>=10,"REVIEW","SKIP")))))');
+  sheet.getRange(r, 24).setValue(data.catatan || "");
+  sheet.getRange(r, 25).setValue(new Date());
+  sheet.getRange(r, 6).setNumberFormat("dd/mm/yyyy");
+  sheet.getRange(r, 25).setNumberFormat("dd/mm/yyyy HH:mm");
 
-  var gStatus=d.gate_total<7?'LEMAH (di bawah minimum 7)':'LULUS ('+d.gate_total+'/12)';
-
-  var txt=
-    '==========================\n'+
-    'OBSERVASI PENDAHULUAN\n'+
-    'Rahayu Farma | Site Analysis\n'+
-    '==========================\n'+
-    '\nIDENTITAS TITIK\n'+sep+
-    'Kode    : '+(d.kode||'-')+'\n'+
-    'Lokasi  : '+(d.nama||'-')+'\n'+
-    'Kec/Kab : '+(d.kec||'-')+(d.kab?', '+d.kab:'')+'\n'+
-    'Tanggal : '+tgl+' pukul '+jam+'\n'+
-    'Observer: '+(d.observer||'-')+'\n'+
-    'Cuaca   : '+(d.cuaca||'-')+'\n'+
-    '\nGATE CHECK ['+gStatus+']\n'+sep+
-    grow+
-    '\nSCORING B ['+d.b_total+'/21]\n'+sep+
-    brow+
-    '\n==========================\n'+
-    'TOTAL     : '+d.total+'/33\n'+
-    'KEPUTUSAN : '+verdict+'\n'+
-    '==========================\n'+
-    '\nCatatan:\n'+(d.catatan||'(tidak ada catatan)');
-
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(txt)
-      .then(function(){alert('Disalin! Paste ke WhatsApp.');})
-      .catch(function(){prompt('Salin teks ini:',txt);});
-  }else{prompt('Salin teks ini:',txt);}
+  return { status: "ok", row: r, kode: data.kode || "-" };
 }
 
-window.onload=function(){
-  var tEl=document.getElementById('tgl');
-  if(tEl)tEl.value=new Date().toISOString().split('T')[0];
-  try{loadEp();}catch(e){}
-  try{renderQ();}catch(e){}
-  var containers=document.querySelectorAll('.sopts');
-  var i;
-  for(i=0;i<containers.length;i++){
-    (function(cont){
-      cont.addEventListener('click',function(e){
-        var t=e.target;
-        while(t&&t!==cont){
-          if(t.nodeName==='BUTTON'&&t.classList.contains('sopt')){pick(t);return;}
-          t=t.parentNode;
-        }
-      });
-    })(containers[i]);
-  }
-  var cbArr=document.querySelectorAll('.cbtn');
-  var j;
-  for(j=0;j<cbArr.length;j++){
-    (function(btn){
-      btn.addEventListener('click',function(){setCuaca(btn,btn.textContent.trim());});
-    })(cbArr[j]);
-  }
-};
-</script>
-</body>
-</html>
+function respond(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ── TEST ──────────────────────────────────────────────────────
+function testKoneksi() {
+  var ss    = SpreadsheetApp.openById(SHEET_ID);
+  var sheet = ss.getSheets()[0];
+  Logger.log("Sheet: " + sheet.getName());
+  Logger.log("Baris kosong berikutnya: " + getNextRow(sheet));
+}
+
+function testKirimDummy() {
+  var r = tulisData({
+    kode:"RF-TEST-01", nama:"Test Dummy", kec:"Kec Test", kab:"Kab Test",
+    tgl:"2026-05-21", observer:"Admin", cuaca:"Cerah",
+    g1:3, g2:2, g3:3, g4:2,
+    s1:3, s2:2, s3:2, s4:2, s5:3, s6:2, s7:1,
+    catatan:"DATA TEST - hapus setelah cek"
+  });
+  Logger.log("Hasil: " + JSON.stringify(r));
+}
