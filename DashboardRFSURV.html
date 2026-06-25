@@ -165,6 +165,9 @@
         <input id="sheet-url" placeholder="URL / ID Sheet" style="width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font-size:12px;margin-bottom:8px;font-family:var(--font);outline:none" />
         <input id="sheet-tab" placeholder="Nama tab" style="width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font-size:12px;margin-bottom:11px;font-family:var(--font);outline:none" />
         <button onclick="pullSheet()" style="width:100%;border:none;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;font-weight:600;font-size:12.5px;padding:10px;border-radius:9px;cursor:pointer;font-family:var(--font)">↻ Tarik dari Sheet</button>
+        <div style="display:flex;align-items:center;gap:8px;margin:11px 0 9px"><div style="flex:1;height:1px;background:var(--line)"></div><span style="font-size:10px;color:var(--gray2)">atau cadangan</span><div style="flex:1;height:1px;background:var(--line)"></div></div>
+        <input type="file" id="file-in" accept=".json,.csv" style="display:none" onchange="loadFile(this)" />
+        <button onclick="document.getElementById('file-in').click()" style="width:100%;border:1px solid var(--line);background:#fff;color:var(--navy);font-weight:600;font-size:12px;padding:9px;border-radius:9px;cursor:pointer;font-family:var(--font)">⬆ Muat file JSON / CSV</button>
         <div id="sheet-status" style="font-size:11px;color:var(--gray2);margin-top:10px">siap — klik Tarik</div>
         <div style="font-size:10px;color:var(--gray2);margin-top:7px;line-height:1.55">Sheet harus di-share “Pelihat — siapa saja yang punya link”. Buka dashboard via https:// agar gviz JSONP jalan.</div>
       </div>
@@ -289,7 +292,7 @@ const DEMO={
 let STATE={order:["CM","CL"],titik:DEMO};
 
 /* ===== SHEET → TITIK GROUPING ===== */
-const SHEET_ID="1CNdpmmmxPuy77xxf8mM8MXBHB9JSvm_YzzrIbzYBqxA", SHEET_TAB="RahayuFarma_Summary1";
+const SHEET_ID="1CNdpmmmxPuy77xxf8mM8MXBHB9JSvm_YzzrIbzYBqxA", SHEET_TAB="Survey";
 const TITIK_LABEL={CM:"Cimanuk",CL:"Ciledug"};
 function num(v){return (v==null||v===""||isNaN(+v))?null:+v;}
 function cap(s){s=String(s||"").trim();return s?s.charAt(0).toUpperCase()+s.slice(1).toLowerCase():"";}
@@ -455,8 +458,41 @@ function pullSheet(){
   s.src=url;document.head.appendChild(s);
 }
 
+/* ===== MANUAL UPLOAD FALLBACK (CSV/JSON) — same grouping pipeline ===== */
+function parseCSV(text){
+  const rows=[];let i=0,f="",row=[],q=false;const N=text.length;
+  const push=()=>{row.push(f);f="";};const endr=()=>{push();rows.push(row);row=[];};
+  while(i<N){const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; } else f+=c; }
+    else { if(c==='"')q=true; else if(c===',')push(); else if(c==='\n')endr(); else if(c==='\r'){} else f+=c; }
+    i++;
+  }
+  if(f.length||row.length)endr();
+  if(!rows.length)return [];
+  const head=rows[0].map(h=>String(h).trim());
+  return rows.slice(1).filter(r=>r.some(x=>String(x).trim()!=="")).map(r=>{const o={};head.forEach((h,j)=>o[h]=r[j]!==undefined?r[j]:"");return o;});
+}
+function loadFile(input){
+  const file=input.files&&input.files[0]; if(!file)return;
+  const rd=new FileReader();
+  rd.onload=function(){
+    try{
+      let rows;
+      if(/\.json$/i.test(file.name)){const j=JSON.parse(rd.result);rows=Array.isArray(j)?j:(j.records||j.data||[j]);}
+      else{rows=parseCSV(String(rd.result));}
+      if(!rows||!rows.length){setStatus("file kosong / tak terbaca","var(--rose)");return;}
+      const st=groupByTitik(rows);
+      if(!st.order.length){setStatus("file terbaca tapi tak terkelompok (cek kolom kode)","var(--amber)");return;}
+      STATE=st;buildSwitcher();render(STATE.order[0]);
+      setStatus("\u2713 file: "+rows.length+" baris \u00b7 "+st.order.length+" titik","var(--emerald)");
+      const ct=document.getElementById("sheet-chip-txt");if(ct)ct.textContent="Sheet \u00b7 file manual";
+    }catch(e){setStatus("gagal baca file: "+e.message,"var(--rose)");}
+  };
+  rd.readAsText(file); input.value="";
+}
+
 /* ===== INIT ===== */
-try{document.getElementById("sheet-url").value=localStorage.getItem("rf_url")||SHEET_ID;document.getElementById("sheet-tab").value=localStorage.getItem("rf_tab")||SHEET_TAB;}catch(e){}
+try{document.getElementById("sheet-url").value=localStorage.getItem("rf_url")||SHEET_ID;var _t=localStorage.getItem("rf_tab");if(_t==="RahayuFarma_Summary1")_t=null;document.getElementById("sheet-tab").value=_t||SHEET_TAB;}catch(e){}
 buildSwitcher();
 render("CM");
 
