@@ -1035,26 +1035,52 @@ function dlCSV(){
   download(`RF_${safeName(cols.kode)}_${fileStamp()}.csv`, "\ufeff"+csv, "text/csv");
   toast("File CSV diunduh");
 }
+// JSONP GET — kebal CORS: respons /exec yang 302→googleusercontent tak bisa dibaca fetch,
+// tapi tag <script> tetap mengeksekusi callback. Dipakai untuk MEMBACA-BALIK baris by kode.
+function jsonpGet(url, params, timeoutMs){
+  return new Promise((resolve,reject)=>{
+    const cbName="__rf_cb_"+Date.now()+"_"+Math.floor(Math.random()*1e6);
+    const sep=url.indexOf("?")>=0?"&":"?";
+    const qs=Object.keys(params).map(k=>encodeURIComponent(k)+"="+encodeURIComponent(params[k])).join("&");
+    const script=document.createElement("script");
+    let done=false;
+    const timer=setTimeout(()=>{ if(done)return; done=true; cleanup(); reject(new Error("timeout")); }, timeoutMs||9000);
+    function cleanup(){ try{ delete window[cbName]; }catch(e){ window[cbName]=undefined; }
+      if(script.parentNode) script.parentNode.removeChild(script); clearTimeout(timer); }
+    window[cbName]=(data)=>{ if(done)return; done=true; cleanup(); resolve(data); };
+    script.onerror=()=>{ if(done)return; done=true; cleanup(); reject(new Error("script error")); };
+    script.src=url+sep+qs+"&callback="+cbName;
+    document.head.appendChild(script);
+  });
+}
 async function sendSheet(){
   const url=getSheetUrl();
   if(!url){ toast("Isi dulu URL Google Sheet di kolom atas"); const f=document.getElementById("sheet-url"); if(f)f.focus(); return; }
   const payload=flatRecord();
+  if(!payload.kode){ toast("Isi dulu Kode titik — dipakai untuk verifikasi di Sheet"); const f=document.getElementById("m-code"); if(f)f.focus(); return; }
   toast("Mengirim ke Sheet…");
+  // 1) TULIS — fire-and-forget. Respons POST /exec tak bisa dibaca lintas-origin (302→googleusercontent),
+  //    jadi sengaja TIDAK diandalkan sebagai konfirmasi. no-cors agar promise resolve bersih setelah server menulis.
   try{
-    // text/plain = simple request → tanpa preflight CORS. TANPA no-cors → respons bisa dibaca = konfirmasi jujur.
-    const res=await fetch(url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
-    let data=null; try{ data=await res.json(); }catch(e){ data=null; }
-    if(res.ok && data && data.ok===true){
-      const act = data.action==="update" ? "diperbarui" : "ditambahkan";
-      toast(`Terkirim ✓ baris ${act} (kode ${payload.kode||"—"})`);
-    } else {
-      const msg=(data&&data.error)?data.error:("respons tak terbaca"+(res.status?" / HTTP "+res.status:""));
-      toast("⚠ Belum terkonfirmasi: "+msg+" — JSON diunduh sebagai cadangan");
-      dlJSON();
-    }
-  }catch(err){
-    // Umumnya = akses deployment bukan "Anyone" (redirect ke login) atau offline.
-    toast("Gagal kirim ("+((err&&err.message)||"jaringan/akses")+") — JSON diunduh sebagai cadangan");
+    await fetch(url,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+  }catch(e){ /* abaikan — kebenaran ditentukan oleh verifikasi JSONP di bawah */ }
+  // 2) VERIFIKASI — baca-balik baris by kode via JSONP. ✓ hanya jika baris benar-benar ada.
+  toast("Memverifikasi di Sheet…");
+  let verified=false, last=null;
+  for(let attempt=0; attempt<2 && !verified; attempt++){
+    if(attempt>0) await new Promise(r=>setTimeout(r,1500));   // eventual-consistency: beri jeda lalu coba lagi sekali
+    try{
+      const data=await jsonpGet(url,{mode:"lookup",kode:payload.kode},9000);
+      last=data;
+      if(data && data.ok===true && data.found===true) verified=true;
+    }catch(e){ last={ok:false,error:(e&&e.message)||"jaringan"}; }
+  }
+  if(verified){
+    toast(`Terkirim ✓ terverifikasi di Sheet (kode ${payload.kode})`);
+  } else {
+    const why = last&&last.error ? last.error
+              : (last&&last.found===false ? "baris belum terlihat" : "respons tak terbaca");
+    toast("⚠ Belum terverifikasi ("+why+") — JSON diunduh sebagai cadangan");
     dlJSON();
   }
 }
