@@ -1003,15 +1003,23 @@ function updateSheetStatus(){
 }
 function flatRecord(){
   const r=buildRecord(); const tf=r.konteks.trafik.sesi;
+  const gm=r.channel.grosir.matrix||[[],[],[],[]];
+  const grow=i=>(gm[i]||[]).reduce((x,n)=>x+(+n||0),0);
+  const rs5=r.channel.resep.s5_radius||[];
+  const rc=r.konteks.ruang;
   const cols={
     timestamp:r.timestamp, kode:r.identitas.kode, alamat:r.identitas.alamat, kecamatan:r.identitas.kecamatan,
     kota:r.identitas.kota, observer:r.identitas.observer,
     composite_skor:r.composite.skor, composite_label:r.composite.label,
     retail_skor:r.channel.retail.skor, retail_label:r.channel.retail.label, ses_kelas:r.channel.retail.kelas_ses,
     grosir_skor:r.channel.grosir.skor, grosir_label:r.channel.grosir.label, grosir_total:r.channel.grosir.total_customer, grosir_lainnya_nama:r.channel.grosir.lainnya_nama,
+    grosir_bidan:grow(0), grosir_mantri:grow(1), grosir_tokoobat:grow(2), grosir_lainnya:grow(3),
     resep_skor:r.channel.resep.skor, resep_label:r.channel.resep.label, rs_overflow:r.channel.resep.rs_overflow,
     s5_total:r.channel.resep.s5_total,
+    s5_500m:rs5[0]??null, s5_1km:rs5[1]??null, s5_2km:rs5[2]??null, s5_3km:rs5[3]??null,
     ruang_skor:r.konteks.ruang.skor, ruang_label:r.konteks.ruang.label,
+    komp_c1:rc.c1, komp_ulasan:rc.c2_sub.cuU, komp_jam:rc.c2_sub.cuJ, komp_ukuran:rc.c2_sub.cuS,
+    komp_keramaian_10:rc.c2_sub.keramaian_10, komp_keramaian_13:rc.c2_sub.keramaian_13, komp_keramaian_17:rc.c2_sub.keramaian_17,
     akses_skor:r.konteks.akses.skor, akses_label:r.konteks.akses.label,
     trafik_skor:r.konteks.trafik.skor, trafik_label:r.konteks.trafik.label,
     trafik_pagi:tf[0].jumlah, trafik_siang:tf[1].jumlah, trafik_sore:tf[2].jumlah, trafik_malam:tf[3].jumlah,
